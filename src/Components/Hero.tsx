@@ -1,52 +1,67 @@
+import bannerImage from "../assets/Banner_1.png";
+
 export default function Hero() {
   return (
     <section
       id="home"
-      className="relative grid min-h-screen place-items-center overflow-hidden"
-      style={{ backgroundImage: "url('/hero.jpg')" }}
+      className="relative min-h-screen bg-cover bg-center flex flex-col items-center justify-between"
+      style={{ backgroundImage: `url(${bannerImage})` }}
     >
-      <div className="absolute inset-0 bg-black/60" />
-      {/* subtle top gradient to help navbar */}
-      <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-black/40 to-transparent" />
-      <div className="relative z-10 mx-auto max-w-5xl px-6 text-center text-white">
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight">
-          Be the Help They Need. <span className="text-red-400">Right Now.</span>
-        </h1>
-        <p className="mx-auto mt-4 max-w-3xl text-base sm:text-lg md:text-xl text-gray-100/90">
-          Join thousands of volunteers and donors saving lives during Bangladesh’s toughest moments.
-        </p>
+      
+      
+      {/* Content */}
+      <div className="relative z-10 w-full flex-1 flex flex-col items-center justify-center px-4 py-12">
+        <div className="text-center max-w-3xl">
+          <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight text-white">
+            Be the Help They Need.{" "}
+            <span className="text-red-400">Right Now.</span>
+          </h1>
 
-        <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <a
-            href="#donate"
-            className="rounded-xl bg-red-600 px-6 py-3 font-semibold shadow-lg shadow-red-600/30 hover:bg-red-700"
-          >
-            Donate Now
-          </a>
-          <a
-            href="#volunteer"
-            className="rounded-xl border border-white/70 px-6 py-3 font-semibold hover:bg-white hover:text-red-700 transition"
-          >
-            Become a Volunteer
-          </a>
+          <p className="mt-6 text-lg md:text-xl text-gray-200 max-w-2xl mx-auto">
+            Join thousands of volunteers and donors saving lives during
+            Bangladesh's toughest moments:
+          </p>
+
+          {/* CTA Buttons with increased gap */}
+          <div className="mt-10 flex flex-col sm:flex-row gap-5 justify-center">
+            <a
+              href="#donate"
+              className="inline-flex items-center justify-center rounded-lg bg-red-600 text-white px-8 py-4 font-bold text-lg hover:bg-red-700 transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-red-600/30"
+            >
+              Donate Now
+            </a>
+            <a
+              href="#volunteer"
+              className="inline-flex items-center justify-center rounded-lg bg-white text-red-600 px-8 py-4 font-bold text-lg hover:bg-gray-100 transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-black/10"
+            >
+              Become a Volunteer
+            </a>
+          </div>
         </div>
+      </div>
 
-        {/* Micro-stats */}
-        <div className="mt-10 grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
-          <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur">
-            👥 <span className="font-bold">2,300+</span> Volunteers
+      {/* Stats + Countdown at Bottom Center with increased gap */}
+      <div className="relative z-10 w-full max-w-4xl px-4 pb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 text-center">
+          <div className="rounded-xl bg-white/15 backdrop-blur-md p-5 hover:bg-white/25 transition-all duration-300 transform hover:-translate-y-1.5 shadow-lg hover:shadow-white/10 border border-white/10">
+            <div className="text-2xl font-bold text-white">👥 2,300+</div>
+            <p className="text-sm text-gray-200 mt-1">Volunteers</p>
           </div>
-          <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur">
-            💰 <span className="font-bold">৳12M+</span> Raised
+          <div className="rounded-xl bg-white/15 backdrop-blur-md p-5 hover:bg-white/25 transition-all duration-300 transform hover:-translate-y-1.5 shadow-lg hover:shadow-white/10 border border-white/10">
+            <div className="text-2xl font-bold text-white">💰 ৳12M+</div>
+            <p className="text-sm text-gray-200 mt-1">Raised</p>
           </div>
-          <div className="rounded-xl bg-white/10 px-4 py-3 backdrop-blur">
-            📍 <span className="font-bold">120+</span> Crises Managed
+          <div className="rounded-xl bg-white/15 backdrop-blur-md p-5 hover:bg-white/25 transition-all duration-300 transform hover:-translate-y-1.5 shadow-lg hover:shadow-white/10 border border-white/10">
+            <div className="text-2xl font-bold text-white">📍 120+</div>
+            <p className="text-sm text-gray-200 mt-1">Crises Managed</p>
           </div>
         </div>
 
         {/* Countdown */}
-        <div className="mt-6 text-orange-300 font-semibold">
-          🌪 Cyclone Relief Fund closes in: <span>02d 14h 35m</span>
+        <div className="mt-6 text-center bg-red-900/70 py-3 px-4 rounded-lg backdrop-blur-sm border border-red-800/50">
+          <span className="text-orange-300 font-semibold text-sm sm:text-base">
+            🌪 Cyclone Relief Fund closes in: <span className="font-bold">02d 14h 35m</span>
+          </span>
         </div>
       </div>
     </section>
