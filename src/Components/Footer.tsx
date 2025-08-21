@@ -1,24 +1,43 @@
 export default function Footer() {
   return (
-    <footer className="bg-[#003049] text-white">
+    <footer className="bg-[#003049] text-white mt-10">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-8 px-6 py-12 sm:grid-cols-3">
         <div>
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-red-500 grid place-content-center font-bold">CA</div>
+            <div className="h-8 w-8 rounded-full bg-red-500 grid place-content-center font-bold">
+              CA
+            </div>
             <span className="text-lg font-bold">CrisisAid</span>
           </div>
           <p className="mt-3 text-sm text-gray-200/90">
-            A transparent, real-time platform to coordinate relief and empower communities across Bangladesh.
+            A transparent, real-time platform to coordinate relief and empower
+            communities across Bangladesh.
           </p>
         </div>
 
         <div>
           <h4 className="font-semibold">Quick Links</h4>
           <ul className="mt-3 space-y-2 text-sm text-gray-200/90">
-            <li><a href="#about" className="hover:underline">About</a></li>
-            <li><a href="#privacy" className="hover:underline">Privacy</a></li>
-            <li><a href="#contact" className="hover:underline">Contact</a></li>
-            <li><a href="#faq" className="hover:underline">FAQ</a></li>
+            <li>
+              <a href="#abou" className="hover:underlin">
+                About
+              </a>
+            </li>
+            <li>
+              <a href="#privacy" className="hover:underline">
+                Privacy
+              </a>
+            </li>
+            <li>
+              <a href="#contact" className="hover:underline">
+                Contact
+              </a>
+            </li>
+            <li>
+              <a href="#faq" className="hover:underline">
+                FAQ
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -28,16 +47,34 @@ export default function Footer() {
             <input
               type="email"
               placeholder="Email for updates"
-              className="w-full rounded-lg px-3 py-2 text-gray-900"
+              className="w-full rounded-lg px-3 py-2 text-green-50"
             />
             <button className="rounded-lg bg-red-500 px-4 py-2 font-semibold hover:bg-red-600">
               Subscribe
             </button>
           </form>
           <div className="mt-4 flex gap-4 text-white/80">
-            <a href="#" aria-label="Facebook"></a>
-            <a href="#" aria-label="Twitter"></a>
-            <a href="#" aria-label="Instagram"></a>
+            <a href="#" aria-label="Facebook">
+              <img
+                src="../assets/facebook.png"
+                alt="Facebook"
+                className="h-6 w-6"
+              />
+            </a>
+            <a href="#" aria-label="Twitter">
+              <img
+                src="../assets/twitter.png"
+                alt="Twitter"
+                className="h-6 w-6"
+              />
+            </a>
+            <a href="#" aria-label="Instagram">
+              <img
+                src="../assets/instagram.png"
+                alt="Instagram"
+                className="h-6 w-6"
+              />
+            </a>
           </div>
         </div>
       </div>

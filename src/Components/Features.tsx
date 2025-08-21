@@ -43,7 +43,7 @@ export default function Features() {
               built for Bangladesh’s realities.
             </p>
             <img
-              src="/placeholder.webp"
+              src="../assets/download.jpeg"
               alt="App preview"
               className="mt-6 rounded-2xl border shadow-sm"
             />

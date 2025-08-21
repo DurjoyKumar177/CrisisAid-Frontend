@@ -22,18 +22,20 @@ export default function Navbar() {
     <header
       className={`fixed inset-x-0 top-0 z-50 transition-all ${
         scrolled ? "bg-white/95 backdrop-blur shadow" : "bg-transparent"
-      }`}
-    >
+      }`}>
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Brand */}
           <a href="#home" className="flex items-center gap-2">
             <div className="h-8 w-8 rounded-full bg-red-600 grid place-content-center text-white font-bold">
-              CA
+              
             </div>
+            <img src="../assets/Logo_2.png" alt="" />
             <div className="leading-tight">
               <p className="font-extrabold text-lg text-red-600">CrisisAid</p>
-              <p className="text-[11px] text-gray-500 -mt-1">Together, We Respond</p>
+              <p className="text-[11px] text-gray-500 -mt-1">
+                Together, We Respond
+              </p>
             </div>
           </a>
 
@@ -43,19 +45,18 @@ export default function Navbar() {
               <li key={l.href}>
                 <a
                   href={l.href}
-                  className="text-gray-700 hover:text-red-600 transition-colors"
-                >
+                  className="text-gray-700 hover:text-red-600 transition-colors">
                   {l.label}
                 </a>
               </li>
             ))}
             <li>
-              <button className="rounded-lg border border-red-600 px-3 py-2 text-red-600 hover:bg-red-600 hover:text-white transition">
+              <button className="rounded-lg border border-red-600 px-3 py-2 text-red-600 hover:bg-red-600 hover:text-blue-600 transition">
                 Login
               </button>
             </li>
             <li>
-              <button className="rounded-lg bg-red-600 px-3 py-2 text-white hover:bg-red-700 transition">
+              <button className="rounded-lg bg-red-600 px-3 py-2 text-black hover:bg-red-700 transition">
                 Sign Up
               </button>
             </li>
@@ -63,8 +64,7 @@ export default function Navbar() {
               <select
                 aria-label="Language"
                 className="rounded-lg border px-2 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                defaultValue="EN"
-              >
+                defaultValue="EN">
                 <option value="EN">EN</option>
                 <option value="BN">বাংলা</option>
               </select>
@@ -75,10 +75,12 @@ export default function Navbar() {
           <button
             className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100"
             onClick={() => setOpen((v) => !v)}
-            aria-label="Open menu"
-          >
+            aria-label="Open menu">
             <svg width="24" height="24" fill="none" stroke="currentColor">
-              <path strokeWidth="2" d={open ? "M6 18L18 6M6 6l12 12" : "M3 6h18M3 12h18M3 18h18"} />
+              <path
+                strokeWidth="2"
+                d={open ? "M6 18L18 6M6 6l12 12" : "M3 6h18M3 12h18M3 18h18"}
+              />
             </svg>
           </button>
         </div>
@@ -93,8 +95,7 @@ export default function Navbar() {
                 key={l.href}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="block rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-50"
-              >
+                className="block rounded-lg px-3 py-2 text-gray-700 hover:bg-gray-50">
                 {l.label}
               </a>
             ))}
