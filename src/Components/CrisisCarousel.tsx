@@ -1,4 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
+import image1 from "../assets/image1.webp";
+import image2 from "../assets/image2.jpg";
+import image3 from "../assets/image3.jpg";
+import image4 from "../assets/image4.jpg";
 
 type Crisis = {
   id: string;
@@ -16,7 +20,7 @@ const sample: Crisis[] = [
     location: "Dhaka",
     date: "22 Jul 2024",
     progress: 65,
-    image: "",
+    image: image1,
   },
   {
     id: "2",
@@ -24,7 +28,7 @@ const sample: Crisis[] = [
     location: "Cox’s Bazar",
     date: "17 Apr 2024",
     progress: 48,
-    image: "",
+    image: image2,
   },
   {
     id: "3",
@@ -32,7 +36,7 @@ const sample: Crisis[] = [
     location: "Kurigram",
     date: "15 Jan 2025",
     progress: 82,
-    image: "",
+    image: image3,
   },
   {
     id: "4",
@@ -40,7 +44,7 @@ const sample: Crisis[] = [
     location: "Bandarban",
     date: "10 Mar 2025",
     progress: 30,
-    image: "",
+    image: image4,
   },
 ];
 
@@ -159,3 +163,4 @@ function CrisisCard({ crisis }: { crisis: Crisis }) {
     </article>
   );
 }
+

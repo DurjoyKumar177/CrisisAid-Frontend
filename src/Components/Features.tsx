@@ -1,3 +1,5 @@
+import mainimage from "../assets/Logo_1.png"
+
 const features = [
   {
     title: "Fund Posting & Transparency",
@@ -43,7 +45,7 @@ export default function Features() {
               built for Bangladesh’s realities.
             </p>
             <img
-              src="../assets/download.jpeg"
+              src={mainimage}
               alt="App preview"
               className="mt-6 rounded-2xl border shadow-sm"
             />

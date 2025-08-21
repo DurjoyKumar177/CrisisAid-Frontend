@@ -49,7 +49,7 @@ export default function Footer() {
               placeholder="Email for updates"
               className="w-full rounded-lg px-3 py-2 text-green-50"
             />
-            <button className="rounded-lg bg-red-500 px-4 py-2 font-semibold hover:bg-red-600">
+            <button className="rounded-lg !bg-red-500 text-white px-4 py-2 font-semibold hover:bg-red-600">
               Subscribe
             </button>
           </form>
