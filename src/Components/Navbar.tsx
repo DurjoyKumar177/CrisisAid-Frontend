@@ -51,12 +51,12 @@ export default function Navbar() {
               </li>
             ))}
             <li>
-              <button className="rounded-lg border border-red-600 px-3 py-2 text-red-600 hover:bg-red-600 hover:text-blue-600 transition">
+              <button className="rounded-lg border !bg-blue-400 px-3 py-2 !text-white !hover:bg-blue-700 hover:!text-white transition">
                 Login
               </button>
             </li>
             <li>
-              <button className="rounded-lg bg-red-600 px-3 py-2 text-black hover:bg-red-700 transition">
+              <button className="rounded-lg !bg-red-600 px-3 py-2 !text-white hover:!bg-red-700 transition">
                 Sign Up
               </button>
             </li>

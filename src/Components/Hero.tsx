@@ -25,7 +25,7 @@ export default function Hero() {
               <div className="mt-10 flex flex-col sm:flex-row gap-5 justify-center">
                 <a
                   href="#donate"
-                  className="inline-flex items-center justify-center rounded-lg bg-red-600 text-white px-8 py-4 font-bold text-lg hover:bg-red-700 transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-red-600/30">
+                  className="inline-flex items-center justify-center rounded-lg !bg-red-600 !text-white px-8 py-4 font-bold text-lg hover:bg-red-700 transition-all duration-300 transform hover:-translate-y-1 shadow-lg shadow-red-600/30">
                   Donate Now
                 </a>
                 <a
