@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 
-type T = { quote: string; name: string; role: string; avatar?: string };
-
-const items: T[] = [
+const items = [
   { quote: "CrisisAid gave me the tools to help my own community after floods.", name: "Rahim", role: "Volunteer, Sunamganj" },
   { quote: "Donation tracking is transparent — I know where my money goes.", name: "Ayesha", role: "Donor, Dhaka" },
   { quote: "We received food and medicine in time. Thank you.", name: "Shorna", role: "Survivor, Kurigram" },

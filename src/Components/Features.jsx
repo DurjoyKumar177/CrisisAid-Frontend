@@ -39,7 +39,7 @@ export default function Features() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid lg:grid-cols-2 gap-10 items-start">
           <div>
-            <h2 className="text-3xl font-bold">Why CrisisAid?</h2>
+            <h2 className="text-3xl font-bold !text-orange-500">Why CrisisAid?</h2>
             <p className="mt-3 text-gray-600">
               A unified platform that coordinates relief, increases transparency, and speeds response —
               built for Bangladesh’s realities.

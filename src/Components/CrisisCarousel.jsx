@@ -1,19 +1,11 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import image1 from "../assets/image1.webp";
 import image2 from "../assets/image2.jpg";
 import image3 from "../assets/image3.jpg";
 import image4 from "../assets/image4.jpg";
 
-type Crisis = {
-  id: string;
-  title: string;
-  location: string;
-  date: string;
-  progress: number; // 0..100
-  image?: string;
-};
 
-const sample: Crisis[] = [
+const sample = [
   {
     id: "1",
     title: "Flood in Dhaka",
@@ -51,7 +43,7 @@ const sample: Crisis[] = [
 export default function CrisisCarousel() {
   const [index, setIndex] = useState(0);
   const [vw, setVw] = useState(window.innerWidth);
-  const intervalRef = useRef<number | null>(null);
+  // const intervalRef = useRef<number | null>(null);
 
   const perView = useMemo(() => (vw >= 1024 ? 3 : vw >= 640 ? 2 : 1), [vw]);
   const pages = Math.max(1, Math.ceil(sample.length / perView));
@@ -62,20 +54,20 @@ export default function CrisisCarousel() {
     return () => window.removeEventListener("resize", onResize);
   }, []);
 
-  useEffect(() => {
-    if (intervalRef.current) window.clearInterval(intervalRef.current);
-    intervalRef.current = window.setInterval(() => {
-      setIndex((i) => (i + 1) % pages);
-    }, 3500);
-    return () => {
-      if (intervalRef.current) window.clearInterval(intervalRef.current);
-    };
-  }, [pages]);
+  // useEffect(() => {
+  //   if (intervalRef.current) window.clearInterval(intervalRef.current);
+  //   intervalRef.current = window.setInterval(() => {
+  //     setIndex((i) => (i + 1) % pages);
+  //   }, 3500);
+  //   return () => {
+  //     if (intervalRef.current) window.clearInterval(intervalRef.current);
+  //   };
+  // }, [pages]);
 
   return (
     <section id="map" className="bg-gray-50 py-16">
       <div className="mx-auto max-w-7xl px-6">
-        <h2 className="text-center text-3xl font-bold">
+        <h2 className="text-center text-3xl font-bold !text-blue-300">
           Real-Time Crisis Highlights
         </h2>
         <p className="mt-2 text-center text-gray-600">
@@ -121,8 +113,7 @@ export default function CrisisCarousel() {
     </section>
   );
 }
-
-function CrisisCard({ crisis }: { crisis: Crisis }) {
+function CrisisCard({ crisis }) {
   return (
     <article className="group relative w-full rounded-2xl bg-white shadow hover:shadow-lg transition overflow-hidden">
       <div
