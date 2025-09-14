@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
-import { FcGoogle } from "react-icons/fc";
+import { useGoogleLogin } from "@react-oauth/google";
 import { FaGithub } from "react-icons/fa";
 import axios from "axios";
 
@@ -28,23 +27,23 @@ export default function Login() {
     }
   };
 
-  // ✅ Handle Google login success
-  const handleGoogleSuccess = async (credentialResponse) => {
-    try {
-      const res = await axios.post(
-        "http://127.0.0.1:8000/api/accounts/google/",
-        { access_token: credentialResponse.credential }
-      );
-      localStorage.setItem("token", res.data.key);
-      navigate("/");
-    } catch (err) {
-      setError("Google login failed. Try again.");
-    }
-  };
-
-  const handleGoogleError = () => {
-    setError("Google login was unsuccessful. Try again.");
-  };
+  // ✅ Google login using access_token
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        const res = await axios.post(
+          "http://127.0.0.1:8000/api/accounts/google/",
+          { access_token: tokenResponse.access_token }
+        );
+        localStorage.setItem("token", res.data.key);
+        navigate("/");
+      } catch (err) {
+        setError("Google login failed. Try again.");
+      }
+    },
+    onError: () => setError("Google login was unsuccessful. Try again."),
+    scope: "openid email profile",
+  });
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gray-50">
@@ -92,19 +91,24 @@ export default function Login() {
 
         {/* Google Login Button */}
         <div className="flex flex-col gap-3">
-          <GoogleLogin
-            onSuccess={handleGoogleSuccess}
-            onError={handleGoogleError}
-            width="100%"
-            shape="pill"
-            text="signin_with"
-          />
+          <button
+            onClick={() => googleLogin()}
+            className="flex items-center justify-center gap-2 border py-2 rounded-lg hover:bg-gray-50"
+          >
+            <img
+              src="https://developers.google.com/identity/images/g-logo.png"
+              alt="Google"
+              className="w-5 h-5"
+            />
+            Login with Google
+          </button>
 
-          {/* GitHub Login (still using backend redirect) */}
+          {/* GitHub Login */}
           <button
             className="flex items-center justify-center gap-2 border py-2 rounded-lg hover:bg-gray-50"
             onClick={() =>
-              (window.location.href = "http://127.0.0.1:8000/api/accounts/github/")
+              (window.location.href =
+                "http://127.0.0.1:8000/api/accounts/github/")
             }
           >
             <FaGithub size={20} /> Login with GitHub
