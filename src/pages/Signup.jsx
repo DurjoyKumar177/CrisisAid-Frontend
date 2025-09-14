@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FcGoogle } from "react-icons/fc";
+import { useGoogleLogin } from "@react-oauth/google";
 import { FaGithub } from "react-icons/fa";
 import axios from "axios";
 
@@ -21,11 +21,42 @@ export default function Signup() {
     e.preventDefault();
     setError("");
     try {
-      await axios.post("http://127.0.0.1:8000/api/accounts/auth/registration/", form);
+      await axios.post(
+        "http://127.0.0.1:8000/api/accounts/auth/signup/",
+        form
+      );
       navigate("/verify-email-pending");
     } catch (err) {
-      setError("Signup failed. Please check your details.");
+      if (err.response?.data) {
+        const firstError =
+          Object.values(err.response.data)[0]?.[0] || "Signup failed.";
+        setError(firstError);
+      } else {
+        setError("Signup failed. Please check your details.");
+      }
     }
+  };
+
+  // ✅ Google signup using access_token
+  const googleSignup = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        const res = await axios.post(
+          "http://127.0.0.1:8000/api/accounts/google/",
+          { access_token: tokenResponse.access_token }
+        );
+        localStorage.setItem("token", res.data.key);
+        navigate("/");
+      } catch (err) {
+        setError("Google signup failed. Try again.");
+      }
+    },
+    onError: () => setError("Google signup was unsuccessful. Try again."),
+    scope: "openid email profile",
+  });
+
+  const handleGitHubSignup = () => {
+    window.location.href = "http://127.0.0.1:8000/api/accounts/github/";
   };
 
   return (
@@ -41,6 +72,7 @@ export default function Signup() {
           </div>
         )}
 
+        {/* Manual signup form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="email"
@@ -89,16 +121,25 @@ export default function Signup() {
 
         <div className="my-4 text-center text-gray-500">or</div>
 
+        {/* Social signup buttons */}
         <div className="flex flex-col gap-3">
+          {/* Google Signup */}
           <button
+            onClick={() => googleSignup()}
             className="flex items-center justify-center gap-2 border py-2 rounded-lg hover:bg-gray-50"
-            onClick={() => (window.location.href = "http://127.0.0.1:8000/api/accounts/auth/social/login/google/")}
           >
-            <FcGoogle size={20} /> Sign up with Google
+            <img
+              src="https://developers.google.com/identity/images/g-logo.png"
+              alt="Google"
+              className="w-5 h-5"
+            />
+            Sign up with Google
           </button>
+
+          {/* GitHub Signup */}
           <button
             className="flex items-center justify-center gap-2 border py-2 rounded-lg hover:bg-gray-50"
-            onClick={() => (window.location.href = "http://127.0.0.1:8000/api/accounts/auth/social/login/github/")}
+            onClick={handleGitHubSignup}
           >
             <FaGithub size={20} /> Sign up with GitHub
           </button>
