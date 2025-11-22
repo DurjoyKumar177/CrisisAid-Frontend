@@ -13,6 +13,7 @@
     "@react-oauth/google": "^0.12.2",
     "@tailwindcss/vite": "^4.1.12",
     "axios": "^1.11.0",
+    "calender": "^1.0.3",
     "javascript": "^1.0.0",
     "lucide-react": "^0.543.0",
     "react": "^19.1.1",
