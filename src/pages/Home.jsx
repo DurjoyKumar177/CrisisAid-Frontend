@@ -1,11 +1,11 @@
 import React from 'react'
-import Hero from "../Components/Hero";
-import CrisisCarousel from "../Components/CrisisCarousel";
-import HowItWorks from "../Components/HowItWorks";
-import ImpactMetrics from "../Components/ImpactMetrics";
-import Features from "../Components/Features";
-import Testimonials from "../Components/Testimonials";
-import CallToAction from "../Components/CallToAction";
+import Hero from "../Components/home/Hero";
+import CrisisCarousel from "../Components/home/CrisisCarousel";
+import HowItWorks from "../Components/home/HowItWorks";
+import ImpactMetrics from "../Components/home/ImpactMetrics";
+import Features from "../Components/home/Features";
+import Testimonials from "../Components/home/Testimonials";
+import CallToAction from "../Components/home/CallToAction";
 const Home = () => {
   return (
     <div>
