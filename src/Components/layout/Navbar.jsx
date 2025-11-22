@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 const links = [
   { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/map", label: "Crisis Map" },
+  { href: "/crisis", label: "Crisis" },
   { href: "/donate", label: "Donate" },
   { href: "/volunteer", label: "Volunteer" },
 ];
@@ -12,8 +12,7 @@ const links = [
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // fake auth
-  const [profileImage] = useState("/assets/default_profile.png"); // default image
+  const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,17 +21,8 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // fake login check (replace with localStorage or API check)
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsAuthenticated(true);
-    }
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("token"); // clear token
-    setIsAuthenticated(false);
+  const handleLogout = async () => {
+    await logout();
     navigate("/login");
   };
 
@@ -44,10 +34,10 @@ export default function Navbar() {
     >
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
-          {/* Brand */}
           <Link to="/" className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-red-600 grid place-content-center text-white font-bold"></div>
-            <img src="../assets/Logo_2.png" alt="Logo" />
+            <div className="h-8 w-8 rounded-full bg-red-600 grid place-content-center text-white font-bold">
+              C
+            </div>
             <div className="leading-tight">
               <p className="font-extrabold text-lg text-red-600">CrisisAid</p>
               <p className="text-[11px] text-gray-500 -mt-1">
@@ -56,7 +46,6 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop nav */}
           <ul className="hidden md:flex items-center gap-6 text-sm font-medium">
             {links.map((l) => (
               <li key={l.href}>
@@ -74,7 +63,7 @@ export default function Navbar() {
                 <li>
                   <Link
                     to="/login"
-                    className="rounded-lg border !bg-blue-400 px-3 py-2 !text-white hover:!bg-blue-700 transition"
+                    className="rounded-lg border bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 transition"
                   >
                     Login
                   </Link>
@@ -82,7 +71,7 @@ export default function Navbar() {
                 <li>
                   <Link
                     to="/signup"
-                    className="rounded-lg !bg-red-600 px-3 py-2 !text-white hover:!bg-red-700 transition"
+                    className="rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700 transition"
                   >
                     Sign Up
                   </Link>
@@ -91,18 +80,26 @@ export default function Navbar() {
             ) : (
               <li className="relative group">
                 <button className="flex items-center gap-2">
-                  <img
-                    src={profileImage}
-                    alt="Profile"
-                    className="w-9 h-9 rounded-full border"
-                  />
+                  <div className="w-9 h-9 rounded-full bg-red-600 text-white flex items-center justify-center font-bold">
+                    {user?.username?.charAt(0).toUpperCase() || "U"}
+                  </div>
                 </button>
-                <div className="absolute right-0 mt-2 hidden group-hover:block bg-white rounded-lg shadow-lg w-40">
+                <div className="absolute right-0 mt-2 hidden group-hover:block bg-white rounded-lg shadow-lg w-48 py-2">
+                  <div className="px-4 py-2 border-b">
+                    <p className="text-sm font-medium text-gray-900">{user?.username}</p>
+                    <p className="text-xs text-gray-500">{user?.email}</p>
+                  </div>
                   <Link
                     to="/profile"
                     className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                   >
                     Profile
+                  </Link>
+                  <Link
+                    to="/my-posts"
+                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                  >
+                    My Posts
                   </Link>
                   <button
                     onClick={handleLogout}
@@ -113,20 +110,8 @@ export default function Navbar() {
                 </div>
               </li>
             )}
-
-            <li>
-              <select
-                aria-label="Language"
-                className="rounded-lg border px-2 py-2 text-sm text-gray-700 hover:bg-gray-50"
-                defaultValue="EN"
-              >
-                <option value="EN">EN</option>
-                <option value="BN">বাংলা</option>
-              </select>
-            </li>
           </ul>
 
-          {/* Mobile toggle */}
           <button
             className="md:hidden inline-flex items-center justify-center rounded-md p-2 text-gray-700 hover:bg-gray-100"
             onClick={() => setOpen((v) => !v)}
@@ -135,18 +120,13 @@ export default function Navbar() {
             <svg width="24" height="24" fill="none" stroke="currentColor">
               <path
                 strokeWidth="2"
-                d={
-                  open
-                    ? "M6 18L18 6M6 6l12 12"
-                    : "M3 6h18M3 12h18M3 18h18"
-                }
+                d={open ? "M6 18L18 6M6 6l12 12" : "M3 6h18M3 12h18M3 18h18"}
               />
             </svg>
           </button>
         </div>
       </nav>
 
-      {/* Mobile menu */}
       {open && (
         <div className="md:hidden border-t bg-white">
           <div className="mx-auto max-w-7xl px-4 py-3 space-y-2">
@@ -166,20 +146,20 @@ export default function Navbar() {
                   <Link
                     to="/login"
                     onClick={() => setOpen(false)}
-                    className="flex-1 rounded-lg border border-blue-400 px-3 py-2 text-blue-600"
+                    className="flex-1 rounded-lg border border-blue-400 px-3 py-2 text-center text-blue-600"
                   >
                     Login
                   </Link>
                   <Link
                     to="/signup"
                     onClick={() => setOpen(false)}
-                    className="flex-1 rounded-lg bg-red-600 px-3 py-2 text-white"
+                    className="flex-1 rounded-lg bg-red-600 px-3 py-2 text-center text-white"
                   >
                     Sign Up
                   </Link>
                 </>
               ) : (
-                <div className="w-full">
+                <div className="w-full space-y-2">
                   <Link
                     to="/profile"
                     onClick={() => setOpen(false)}
@@ -192,17 +172,12 @@ export default function Navbar() {
                       handleLogout();
                       setOpen(false);
                     }}
-                    className="block w-full rounded-lg px-3 py-2 text-red-600 hover:bg-gray-50"
+                    className="block w-full rounded-lg px-3 py-2 text-left text-red-600 hover:bg-gray-50"
                   >
                     Logout
                   </button>
                 </div>
               )}
-
-              <select className="rounded-lg border px-2 py-2 text-sm">
-                <option>EN</option>
-                <option>বাংলা</option>
-              </select>
             </div>
           </div>
         </div>
