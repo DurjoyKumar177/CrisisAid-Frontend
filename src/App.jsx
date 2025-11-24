@@ -1,5 +1,4 @@
 import './App.css'
-
 import Home from "./pages/Home";
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout";
@@ -9,12 +8,9 @@ import Signup from './pages/Signup';
 import VerifyEmail from './pages/VerifyEmail';
 import Profile from './pages/Profile';
 import Pending from './pages/Pending';
-
-
-
+import AuthCallback from './pages/AuthCallback';  // Add this import
 
 function App() {
-
   const router = createBrowserRouter(
     createRoutesFromElements(
       <Route path="/" element={<RootLayout />}>
@@ -26,6 +22,9 @@ function App() {
         <Route path="verify-email/:key" element={<VerifyEmail />} />
         <Route path="pending" element={<Pending />} />
         <Route path="profile" element={<Profile />} />
+        
+        {/* OAuth callback route */}
+        <Route path="auth/callback" element={<AuthCallback />} />
       </Route>
     )
   )
