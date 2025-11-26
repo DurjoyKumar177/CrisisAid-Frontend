@@ -1,2 +1,16 @@
 @import "tailwindcss";
 
+/* Hide scrollbar but keep functionality */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Custom border width for active tab */
+.border-b-3 {
+  border-bottom-width: 3px;
+}

@@ -8,7 +8,9 @@ import Signup from './pages/Signup';
 import VerifyEmail from './pages/VerifyEmail';
 import Profile from './pages/Profile';
 import Pending from './pages/Pending';
-import AuthCallback from './pages/AuthCallback';  // Add this import
+import AuthCallback from './pages/AuthCallback';
+import CrisisListing from './pages/CrisisListing';
+import CrisisDetail from './pages/CrisisDetail';
 
 function App() {
   const router = createBrowserRouter(
@@ -22,6 +24,10 @@ function App() {
         <Route path="verify-email/:key" element={<VerifyEmail />} />
         <Route path="pending" element={<Pending />} />
         <Route path="profile" element={<Profile />} />
+        
+        {/* Crisis routes */}
+        <Route path="crisis" element={<CrisisListing />} />
+        <Route path="crisis/:id" element={<CrisisDetail />} />
         
         {/* OAuth callback route */}
         <Route path="auth/callback" element={<AuthCallback />} />
