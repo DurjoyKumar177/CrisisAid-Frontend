@@ -11,6 +11,7 @@ import Pending from './pages/Pending';
 import AuthCallback from './pages/AuthCallback';
 import CrisisListing from './pages/CrisisListing';
 import CrisisDetail from './pages/CrisisDetail';
+import DonatePage from './pages/DonatePage';
 
 function App() {
   const router = createBrowserRouter(
@@ -28,6 +29,7 @@ function App() {
         {/* Crisis routes */}
         <Route path="crisis" element={<CrisisListing />} />
         <Route path="crisis/:id" element={<CrisisDetail />} />
+        <Route path="donate" element={<DonatePage />} />
         
         {/* OAuth callback route */}
         <Route path="auth/callback" element={<AuthCallback />} />
