@@ -1,28 +1,31 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { getCrisisPosts } from "../../services/crisisService";
 import Loader from "../common/Loader";
-
-// Fallback images
-import image1 from "../../assets/image1.webp";
-import image2 from "../../assets/image2.jpg";
-import image3 from "../../assets/image3.jpg";
-import image4 from "../../assets/image4.jpg";
-
-const fallbackImages = [image1, image2, image3, image4];
+import placeholder1 from "../../assets/placeholder1.jpg";
 
 export default function CrisisCarousel() {
   const [crises, setCrises] = useState([]);
   const [loading, setLoading] = useState(true);
   const [index, setIndex] = useState(0);
-  const [vw, setVw] = useState(typeof window !== 'undefined' ? window.innerWidth : 1024);
 
-  const perView = useMemo(() => (vw >= 1024 ? 3 : vw >= 640 ? 2 : 1), [vw]);
-  const pages = Math.max(1, Math.ceil(crises.length / perView));
+  // Determine cards per view based on screen size
+  const [cardsPerView, setCardsPerView] = useState(3);
 
   useEffect(() => {
-    const onResize = () => setVw(window.innerWidth);
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
+    const updateCardsPerView = () => {
+      if (window.innerWidth >= 1024) {
+        setCardsPerView(3);
+      } else if (window.innerWidth >= 640) {
+        setCardsPerView(2);
+      } else {
+        setCardsPerView(1);
+      }
+    };
+
+    updateCardsPerView();
+    window.addEventListener("resize", updateCardsPerView);
+    return () => window.removeEventListener("resize", updateCardsPerView);
   }, []);
 
   useEffect(() => {
@@ -31,32 +34,26 @@ export default function CrisisCarousel() {
 
   const fetchCrises = async () => {
     try {
-      const data = await getCrisisPosts({ post_type: '' });
-      // Take first 6 approved posts
-      const approvedPosts = data.filter(post => post.status === 'approved').slice(0, 6);
+      const data = await getCrisisPosts();
+      // Filter approved posts only
+      const approvedPosts = data.filter((post) => post.status === "approved");
       setCrises(approvedPosts);
     } catch (error) {
-      console.error('Error fetching crises:', error);
-      // Use dummy data as fallback
-      setCrises([
-        {
-          id: 1,
-          title: "Flood in Dhaka",
-          location: "Dhaka",
-          created_at: "2024-07-22",
-          banner_image: null,
-        },
-        {
-          id: 2,
-          title: "Cyclone in Coast",
-          location: "Cox's Bazar",
-          created_at: "2024-04-17",
-          banner_image: null,
-        },
-      ]);
+      console.error("Error fetching crises:", error);
+      setCrises([]);
     } finally {
       setLoading(false);
     }
+  };
+
+  const totalPages = Math.ceil(crises.length / cardsPerView);
+
+  const handlePrev = () => {
+    setIndex((prev) => (prev === 0 ? totalPages - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setIndex((prev) => (prev === totalPages - 1 ? 0 : prev + 1));
   };
 
   if (loading) {
@@ -73,11 +70,18 @@ export default function CrisisCarousel() {
     return (
       <section className="bg-gray-50 py-16">
         <div className="mx-auto max-w-7xl px-6 text-center">
+          <h2 className="text-3xl font-bold text-blue-600 mb-4">
+            Real-Time Crisis Highlights
+          </h2>
           <p className="text-gray-600">No active crises at the moment.</p>
         </div>
       </section>
     );
   }
+
+  // Get current page crises
+  const startIdx = index * cardsPerView;
+  const currentCrises = crises.slice(startIdx, startIdx + cardsPerView);
 
   return (
     <section id="map" className="bg-gray-50 py-16">
@@ -89,34 +93,56 @@ export default function CrisisCarousel() {
           Live posts show progress, needs, and transparency.
         </p>
 
-        <div className="relative mt-8 overflow-hidden">
-          <div
-            className="flex transition-transform duration-700"
-            style={{
-              transform: `translateX(-${index * 100}%)`,
-              width: `${pages * 100}%`,
-            }}>
-            {Array.from({ length: pages }).map((_, page) => (
-              <div
-                key={page}
-                className="flex w-full flex-none gap-6 px-1"
-                style={{ width: `${100 / pages}%` }}>
-                {crises
-                  .slice(page * perView, page * perView + perView)
-                  .map((crisis, idx) => (
-                    <CrisisCard 
-                      key={crisis.id} 
-                      crisis={crisis}
-                      fallbackImage={fallbackImages[idx % fallbackImages.length]}
-                    />
-                  ))}
-              </div>
-            ))}
+        <div className="relative mt-8">
+          {/* Navigation Arrows */}
+          {totalPages > 1 && (
+            <>
+              <button
+                onClick={handlePrev}
+                className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition"
+                aria-label="Previous slide"
+              >
+                <FaChevronLeft className="text-red-600 text-xl" />
+              </button>
+
+              <button
+                onClick={handleNext}
+                className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 bg-white rounded-full p-3 shadow-lg hover:bg-gray-100 transition"
+                aria-label="Next slide"
+              >
+                <FaChevronRight className="text-red-600 text-xl" />
+              </button>
+            </>
+          )}
+
+          {/* Cards Container */}
+          <div className="overflow-hidden">
+            <div
+              className="flex transition-transform duration-700 ease-in-out gap-6"
+              style={{
+                transform: `translateX(-${index * 100}%)`,
+              }}
+            >
+              {Array.from({ length: totalPages }).map((_, pageIdx) => (
+                <div
+                  key={pageIdx}
+                  className="flex gap-6 flex-shrink-0"
+                  style={{ width: "100%" }}
+                >
+                  {crises
+                    .slice(pageIdx * cardsPerView, (pageIdx + 1) * cardsPerView)
+                    .map((crisis) => (
+                      <CrisisCard key={crisis.id} crisis={crisis} />
+                    ))}
+                </div>
+              ))}
+            </div>
           </div>
 
-          {pages > 1 && (
+          {/* Dots Indicator */}
+          {totalPages > 1 && (
             <div className="mt-6 flex justify-center gap-2">
-              {Array.from({ length: pages }).map((_, i) => (
+              {Array.from({ length: totalPages }).map((_, i) => (
                 <button
                   key={i}
                   aria-label={`Go to slide ${i + 1}`}
@@ -134,16 +160,18 @@ export default function CrisisCarousel() {
   );
 }
 
-function CrisisCard({ crisis, fallbackImage }) {
+function CrisisCard({ crisis }) {
   const formatDate = (dateString) => {
     const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+    return date.toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
   };
 
-  // Use banner_image if available, otherwise use fallback
-  const imageUrl = crisis.banner_image 
-    ? `http://127.0.0.1:8000${crisis.banner_image}` 
-    : fallbackImage;
+  // Use backend image if available, otherwise placeholder
+  const imageUrl = crisis.banner_image || placeholder1;
 
   return (
     <article className="group relative w-full rounded-2xl bg-white shadow hover:shadow-lg transition overflow-hidden">
@@ -156,7 +184,7 @@ function CrisisCard({ crisis, fallbackImage }) {
       <div className="p-5">
         <h3 className="text-lg font-semibold line-clamp-1">{crisis.title}</h3>
         <p className="text-sm text-gray-500">
-          {crisis.location || 'Bangladesh'} • {formatDate(crisis.created_at)}
+          {crisis.location || "Bangladesh"} • {formatDate(crisis.created_at)}
         </p>
 
         {/* Progress bar - simulated for now */}
@@ -166,9 +194,7 @@ function CrisisCard({ crisis, fallbackImage }) {
             style={{ width: `${Math.floor(Math.random() * 40 + 30)}%` }}
           />
         </div>
-        <div className="mt-1 text-right text-xs text-gray-500">
-          In Progress
-        </div>
+        <div className="mt-1 text-right text-xs text-gray-500">In Progress</div>
 
         <div className="mt-4 flex items-center justify-between gap-2">
           <a
