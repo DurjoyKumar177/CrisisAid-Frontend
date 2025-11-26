@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     if (userData) {
       setUser(userData);
     } else {
-      checkAuth();
+      checkAuth(); // Fetch user data including profile picture
     }
   };
 
