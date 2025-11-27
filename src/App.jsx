@@ -13,7 +13,8 @@ import CrisisListing from './pages/CrisisListing';
 import CrisisDetail from './pages/CrisisDetail';
 import DonatePage from './pages/DonatePage';
 import CreateCrisis from './pages/CreateCrisis';  
-import Dashboard from './pages/Dashboard';  // ADD THIS
+import Dashboard from './pages/Dashboard';
+import VolunteerPage from './pages/VolunteerPage';
 
 function App() {
   const router = createBrowserRouter(
@@ -38,6 +39,7 @@ function App() {
         
         {/* Donation route */}
         <Route path="donate" element={<DonatePage />} />
+        <Route path="volunteer" element={<VolunteerPage />} />
         
         {/* OAuth callback route */}
         <Route path="auth/callback" element={<AuthCallback />} />
