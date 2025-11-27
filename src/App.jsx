@@ -12,6 +12,8 @@ import AuthCallback from './pages/AuthCallback';
 import CrisisListing from './pages/CrisisListing';
 import CrisisDetail from './pages/CrisisDetail';
 import DonatePage from './pages/DonatePage';
+import CreateCrisis from './pages/CreateCrisis';  
+import Dashboard from './pages/Dashboard';  // ADD THIS
 
 function App() {
   const router = createBrowserRouter(
@@ -28,7 +30,13 @@ function App() {
         
         {/* Crisis routes */}
         <Route path="crisis" element={<CrisisListing />} />
+        <Route path="crisis/create" element={<CreateCrisis />} />
         <Route path="crisis/:id" element={<CrisisDetail />} />
+
+        {/* Dashboard - Combines My Posts, Applications, Donations */}
+        <Route path="dashboard" element={<Dashboard />} /> {/* ADD THIS */}
+        
+        {/* Donation route */}
         <Route path="donate" element={<DonatePage />} />
         
         {/* OAuth callback route */}
