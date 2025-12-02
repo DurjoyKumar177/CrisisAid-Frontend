@@ -49,27 +49,28 @@ export default function Dashboard() {
     fetchData();
   }, [isAuthenticated, navigate, activeTab]);
 
-  const fetchData = async () => {
-    setLoading(true);
-    setError("");
-    try {
-      if (activeTab === 'posts') {
-        const data = await getMyCrisisPosts();
-        setPosts(data);
-      } else if (activeTab === 'applications') {
-        const data = await getMyVolunteerApplications();
-        setApplications(data);
-      } else if (activeTab === 'history') {
-        const data = await getMyDonations();
-        setDonations(data);
-      }
-    } catch (err) {
-      setError("Failed to load data. Please try again.");
-      console.error(err);
-    } finally {
-      setLoading(false);
+const fetchData = async () => {
+  setLoading(true);
+  setError("");
+  try {
+    if (activeTab === 'posts') {
+      const data = await getMyCrisisPosts();
+      setPosts(data);
+    } else if (activeTab === 'applications') {
+      const data = await getMyVolunteerApplications();
+      console.log("Applications data:", data); // ADD THIS LINE HERE
+      setApplications(data);
+    } else if (activeTab === 'history') {
+      const data = await getMyDonations();
+      setDonations(data);
     }
-  };
+  } catch (err) {
+    setError("Failed to load data. Please try again.");
+    console.error(err);
+  } finally {
+    setLoading(false);
+  }
+};
 
   const handleDelete = async (id) => {
     setDeleting(true);
@@ -283,40 +284,69 @@ export default function Dashboard() {
                   )
                 )}
 
-                {/* Applications Tab */}
-                {activeTab === 'applications' && (
-                  applications.length === 0 ? (
-                    <div className="text-center py-16">
-                      <div className="text-7xl mb-4">🤝</div>
-                      <h3 className="text-2xl font-bold text-gray-900 mb-3">No Applications Yet</h3>
-                      <p className="text-gray-600">You haven't applied to volunteer for any crisis</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-4">
-                      {applications.map((app) => (
-                        <div key={app.id} className="bg-white border-2 border-gray-100 rounded-xl p-6 hover:shadow-lg transition">
-                          <div className="flex items-start justify-between mb-4">
-                            <div className="flex-1">
-                              <h3 className="text-lg font-bold text-gray-900 mb-2">{app.crisis_title}</h3>
-                              <p className="text-gray-600 text-sm mb-3">{app.message}</p>
-                              <div className="flex items-center gap-2 text-sm text-gray-500">
-                                <FaClock />
-                                <span>Applied {formatDate(app.applied_at)}</span>
-                              </div>
-                            </div>
-                            {getStatusBadge(app.status)}
-                          </div>
-                          <Link
-                            to={`/crisis/${app.crisis_post}`}
-                            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm"
-                          >
-                            View Crisis Post →
-                          </Link>
-                        </div>
-                      ))}
-                    </div>
-                  )
-                )}
+{/* Applications Tab */}
+{activeTab === 'applications' && (
+  applications.length === 0 ? (
+    <div className="text-center py-16">
+      <div className="text-7xl mb-4">🤝</div>
+      <h3 className="text-2xl font-bold text-gray-900 mb-3">No Applications Yet</h3>
+      <p className="text-gray-600">You haven't applied to volunteer for any crisis</p>
+    </div>
+  ) : (
+    <div className="space-y-4">
+      {applications.map((app) => {
+        // Get crisis details from the nested object
+        const crisisDetail = app.crisis_post_detail;
+        const crisisId = crisisDetail?.id;
+        const crisisTitle = crisisDetail?.title;
+        const crisisStatus = crisisDetail?.status;
+        
+        return (
+          <div key={app.id} className="bg-white border-2 border-gray-100 rounded-xl p-6 hover:shadow-lg transition">
+            <div className="flex items-start justify-between mb-4">
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="text-lg font-bold text-gray-900">
+                    {crisisTitle || "Crisis Post"}
+                  </h3>
+                  {crisisStatus && crisisStatus !== 'approved' && (
+                    <span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs font-semibold rounded">
+                      {crisisStatus}
+                    </span>
+                  )}
+                </div>
+                <p className="text-gray-600 text-sm mb-3">{app.message || "No message provided"}</p>
+                <div className="flex items-center gap-2 text-sm text-gray-500">
+                  <FaClock />
+                  <span>Applied {formatDate(app.applied_at)}</span>
+                </div>
+              </div>
+              {getStatusBadge(app.status)}
+            </div>
+            {crisisId ? (
+              crisisStatus === 'approved' ? (
+                <Link
+                  to={`/crisis/${crisisId}`}
+                  className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-semibold text-sm"
+                >
+                  View Crisis Post →
+                </Link>
+              ) : (
+                <span className="text-gray-400 text-sm">
+                  Crisis post is pending approval
+                </span>
+              )
+            ) : (
+              <span className="text-gray-400 text-sm">
+                Cannot view - crisis ID not found
+              </span>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  )
+)}
 
                 {/* History Tab */}
                 {activeTab === 'history' && (
