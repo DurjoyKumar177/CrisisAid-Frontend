@@ -126,12 +126,12 @@ export default function CreateCrisis() {
 
     setError("");
     setCurrentStep(currentStep + 1);
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const prevStep = () => {
     setCurrentStep(currentStep - 1);
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleSubmit = async (e) => {
@@ -155,14 +155,10 @@ export default function CreateCrisis() {
         submitData.append("sections", JSON.stringify(formData.sections));
       }
 
-      const response = await createCrisisPost(submitData);
+      await createCrisisPost(submitData);
       
-      // Success - redirect to pending or my posts
-      navigate("/my-posts", { 
-        state: { 
-          success: "Crisis post submitted successfully! It will be visible after admin approval." 
-        } 
-      });
+      // Success - redirect to dashboard with tab parameter
+      navigate("/dashboard?tab=posts");
     } catch (err) {
       console.error("Submit error:", err);
       setError(err.response?.data?.detail || "Failed to create crisis post. Please try again.");
@@ -173,7 +169,7 @@ export default function CreateCrisis() {
 
   const getSectionIcon = (type) => {
     const section = sectionTypes.find(s => s.value === type);
-    return section?.icon || "📝";
+    return section?.icon || "📄";
   };
 
   return (
@@ -242,7 +238,7 @@ export default function CreateCrisis() {
 
             {/* Step 1: Basic Info */}
             {currentStep === 1 && (
-              <div className="p-8 space-y-6 animate-fadeIn">
+              <div className="p-8 space-y-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                   Basic Crisis Information
                 </h2>
@@ -335,7 +331,7 @@ export default function CreateCrisis() {
 
             {/* Step 2: Image Upload */}
             {currentStep === 2 && (
-              <div className="p-8 space-y-6 animate-fadeIn">
+              <div className="p-8 space-y-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                   Crisis Banner Image
                 </h2>
@@ -390,7 +386,7 @@ export default function CreateCrisis() {
 
             {/* Step 3: Additional Sections */}
             {currentStep === 3 && (
-              <div className="p-8 space-y-6 animate-fadeIn">
+              <div className="p-8 space-y-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                   Additional Information Sections
                 </h2>
@@ -461,7 +457,7 @@ export default function CreateCrisis() {
 
             {/* Step 4: Review */}
             {currentStep === 4 && (
-              <div className="p-8 space-y-6 animate-fadeIn">
+              <div className="p-8 space-y-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">
                   Review Your Submission
                 </h2>
@@ -520,7 +516,8 @@ export default function CreateCrisis() {
                 <button
                   type="button"
                   onClick={prevStep}
-                  className="flex items-center gap-2 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition font-semibold"
+                  disabled={loading}
+                  className="flex items-center gap-2 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-100 transition font-semibold disabled:opacity-50"
                 >
                   <FaArrowLeft />
                   Previous
