@@ -16,6 +16,7 @@ import CreateCrisis from './pages/CreateCrisis';
 import Dashboard from './pages/Dashboard';
 import VolunteerPage from './pages/VolunteerPage';
 import AboutPage from './pages/AboutPage';
+import ContactPage from './pages/ContactPage';
 
 function App() {
   const router = createBrowserRouter(
@@ -47,6 +48,7 @@ function App() {
 
         {/* Informational pages */}
         <Route path="about" element={<AboutPage />} />
+        <Route path="contact" element={<ContactPage />} />
       </Route>
     )
   )
