@@ -15,6 +15,7 @@ import DonatePage from './pages/DonatePage';
 import CreateCrisis from './pages/CreateCrisis';  
 import Dashboard from './pages/Dashboard';
 import VolunteerPage from './pages/VolunteerPage';
+import AboutPage from './pages/AboutPage';
 
 function App() {
   const router = createBrowserRouter(
@@ -43,6 +44,9 @@ function App() {
         
         {/* OAuth callback route */}
         <Route path="auth/callback" element={<AuthCallback />} />
+
+        {/* Informational pages */}
+        <Route path="about" element={<AboutPage />} />
       </Route>
     )
   )
