@@ -1,11 +1,10 @@
 // FILE: src/Components/layout/Navbar.jsx
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import logo from "../../assets/Logo_2.png";
 import { 
   FaUser, 
-  FaChartLine, 
   FaHistory, 
   FaSignOutAlt,
   FaTachometerAlt,
@@ -18,6 +17,89 @@ const links = [
   { href: "/donate", label: "Donate" },
   { href: "/volunteer", label: "Volunteer" },
 ];
+
+// Profile Picture Component
+const ProfilePicture = ({ user, size = "md" }) => {
+  const [imgError, setImgError] = useState(false);
+  const [imgLoaded, setImgLoaded] = useState(false);
+
+  const getProfileImageUrl = () => {
+    if (!user?.profile_picture) return null;
+    
+    const pic = user.profile_picture;
+    
+    // If it's already a full URL (like from Google OAuth or other social login)
+    if (pic.startsWith('http://') || pic.startsWith('https://')) {
+      return pic;
+    }
+    
+    // If it's a local media path, prepend the backend URL
+    // Handle both /media/ and media/ formats
+    if (pic.startsWith('/media/')) {
+      return `http://127.0.0.1:8000${pic}`;
+    } else if (pic.startsWith('media/')) {
+      return `http://127.0.0.1:8000/${pic}`;
+    }
+    
+    // Fallback: assume it needs the media prefix
+    return `http://127.0.0.1:8000${pic.startsWith('/') ? '' : '/'}${pic}`;
+  };
+
+  const profileImageUrl = getProfileImageUrl();
+  
+  // Reset states when user or profile picture changes
+  useEffect(() => {
+    setImgError(false);
+    setImgLoaded(false);
+  }, [user?.profile_picture]);
+
+  const sizeClasses = {
+    sm: "w-8 h-8 text-sm",
+    md: "w-10 h-10 text-lg",
+    lg: "w-12 h-12 text-xl",
+  };
+
+  const borderClasses = {
+    sm: "border-1",
+    md: "border-2",
+    lg: "border-2",
+  };
+
+  // Show initial/fallback avatar when no image or error
+  if (!profileImageUrl || imgError) {
+    return (
+      <div
+        className={`${sizeClasses[size]} rounded-full bg-gradient-to-br from-red-500 to-orange-500 text-white flex items-center justify-center font-bold shadow-lg ${borderClasses[size]} border-red-500`}
+      >
+        {user?.username?.charAt(0).toUpperCase() || user?.email?.charAt(0).toUpperCase() || "U"}
+      </div>
+    );
+  }
+
+  return (
+    <div className="relative">
+      <img
+        src={profileImageUrl}
+        alt={user?.username || "User"}
+        className={`${sizeClasses[size]} rounded-full ${borderClasses[size]} border-red-500 object-cover shadow-lg ${
+          !imgLoaded ? "opacity-0" : "opacity-100"
+        } transition-opacity duration-200`}
+        onLoad={() => setImgLoaded(true)}
+        onError={(e) => {
+          console.error('Failed to load profile image:', profileImageUrl);
+          setImgError(true);
+          setImgLoaded(false);
+        }}
+        loading="lazy"
+      />
+      {!imgLoaded && !imgError && (
+        <div
+          className={`absolute inset-0 ${sizeClasses[size]} rounded-full bg-gradient-to-br from-red-500 to-orange-500 animate-pulse ${borderClasses[size]} border-red-500`}
+        />
+      )}
+    </div>
+  );
+};
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
@@ -37,18 +119,6 @@ export default function Navbar() {
     setDropdownOpen(false);
     navigate("/login");
   };
-
-  const getProfileImage = () => {
-    if (user?.profile_picture) {
-      if (user.profile_picture.startsWith('/media/') || user.profile_picture.startsWith('media/')) {
-        return `http://127.0.0.1:8000${user.profile_picture}`;
-      }
-      return user.profile_picture;
-    }
-    return null;
-  };
-
-  const profileImage = getProfileImage();
 
   return (
     <header
@@ -115,22 +185,7 @@ export default function Navbar() {
                   onClick={() => setDropdownOpen(!dropdownOpen)}
                   className="flex items-center gap-2 hover:opacity-80 transition-opacity"
                 >
-                  {profileImage ? (
-                    <img
-                      src={profileImage}
-                      alt={user?.username}
-                      className="w-10 h-10 rounded-full border-2 border-red-500 object-cover shadow-md"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
-                      }}
-                    />
-                  ) : null}
-                  <div 
-                    className={`w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 text-white flex items-center justify-center font-bold text-lg shadow-lg ${profileImage ? 'hidden' : 'flex'}`}
-                  >
-                    {user?.username?.charAt(0).toUpperCase() || "U"}
-                  </div>
+                  <ProfilePicture user={user} size="md" />
                 </button>
 
                 {/* Premium Dropdown Menu */}
@@ -142,22 +197,7 @@ export default function Navbar() {
                     {/* User Info Header */}
                     <div className="px-5 py-4 border-b border-gray-100 bg-gradient-to-r from-red-50 to-orange-50">
                       <div className="flex items-center gap-3">
-                        {profileImage ? (
-                          <img
-                            src={profileImage}
-                            alt={user?.username}
-                            className="w-12 h-12 rounded-full border-2 border-red-500 object-cover"
-                            onError={(e) => {
-                              e.target.style.display = 'none';
-                              e.target.nextSibling.style.display = 'flex';
-                            }}
-                          />
-                        ) : null}
-                        <div 
-                          className={`w-12 h-12 rounded-full bg-gradient-to-br from-red-500 to-orange-500 text-white flex items-center justify-center font-bold text-xl shadow-lg ${profileImage ? 'hidden' : 'flex'}`}
-                        >
-                          {user?.username?.charAt(0).toUpperCase()}
-                        </div>
+                        <ProfilePicture user={user} size="lg" />
                         <div className="flex-1 min-w-0">
                           <p className="text-sm font-bold text-gray-900 truncate">
                             {user?.username}
@@ -297,22 +337,7 @@ export default function Navbar() {
               <div className="border-t pt-3 space-y-2">
                 {/* User Info */}
                 <div className="flex items-center gap-3 px-4 py-2 bg-gradient-to-r from-red-50 to-orange-50 rounded-lg">
-                  {profileImage ? (
-                    <img
-                      src={profileImage}
-                      alt={user?.username}
-                      className="w-10 h-10 rounded-full border-2 border-red-500 object-cover"
-                      onError={(e) => {
-                        e.target.style.display = 'none';
-                        e.target.nextSibling.style.display = 'flex';
-                      }}
-                    />
-                  ) : null}
-                  <div 
-                    className={`w-10 h-10 rounded-full bg-gradient-to-br from-red-500 to-orange-500 text-white flex items-center justify-center font-bold ${profileImage ? 'hidden' : 'flex'}`}
-                  >
-                    {user?.username?.charAt(0).toUpperCase()}
-                  </div>
+                  <ProfilePicture user={user} size="md" />
                   <div>
                     <p className="text-sm font-semibold text-gray-900">
                       {user?.username}

@@ -7,7 +7,7 @@ import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login: authLogin } = useAuth();
+  const { login: authLogin, checkAuth } = useAuth();
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,11 @@ export default function Login() {
     try {
       const res = await login(form.username, form.password);
       authLogin(res.key);
-      navigate("/");
+      // Give a moment for the token to be set, then check auth to get profile data
+      setTimeout(() => {
+        checkAuth();
+        navigate("/");
+      }, 100);
     } catch (err) {
       if (err.response?.data) {
         const errorData = err.response.data;
@@ -48,7 +52,11 @@ export default function Login() {
       try {
         const res = await googleLogin(tokenResponse.access_token);
         authLogin(res.key);
-        navigate("/");
+        // Give a moment for the token to be set, then check auth to get profile data
+        setTimeout(() => {
+          checkAuth();
+          navigate("/");
+        }, 100);
       } catch (err) {
         console.error("Google login error:", err);
         setError("Google login failed. Please try again.");

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { getCurrentUser, logout as logoutService } from '../services/authService';
+import { getCurrentUser, logout as logoutService, getProfile } from '../services/authService';
 
 const AuthContext = createContext(null);
 
@@ -16,7 +16,9 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem('token');
     if (token) {
       try {
-        const userData = await getCurrentUser();
+        // Fetch user data from the profile endpoint instead
+        // This ensures we get the profile_picture field
+        const userData = await getProfile();
         setUser(userData);
         setIsAuthenticated(true);
       } catch (error) {
