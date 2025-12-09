@@ -24,8 +24,8 @@ export default function ContactPage() {
     {
       icon: FaPhone,
       title: "Call Us",
-      details: "+8801521738141",
-      link: "tel:+8801521738141",
+      details: "+880 1234-567890",
+      link: "tel:+8801234567890",
       color: "text-blue-600",
       bg: "bg-blue-50"
     },
@@ -275,7 +275,7 @@ export default function ContactPage() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-16 bg-white">
+      <section className="py-16 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">
             Frequently Asked Questions
@@ -301,16 +301,21 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Map Section (Placeholder) */}
+      {/* Map Section */}
       <section className="py-16 bg-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Find Us</h2>
-          <div className="bg-white rounded-2xl shadow-lg overflow-hidden h-96 flex items-center justify-center">
-            <div className="text-center">
-              <FaMapMarkerAlt className="text-6xl text-red-600 mx-auto mb-4" />
-              <p className="text-gray-600 text-lg">Dhaka, Bangladesh</p>
-              <p className="text-gray-500 text-sm mt-2">Detailed address will be provided upon appointment</p>
-            </div>
+          <div className="bg-white rounded-2xl shadow-lg overflow-hidden" style={{ height: '500px' }}>
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3651.0446277891757!2d90.38003641498207!3d23.739743584589474!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b8b7db3123bb%3A0x33f738dc3ddbe79f!2sDhaka%20City%20College!5e0!3m2!1sen!2sbd!4v1234567890123!5m2!1sen!2sbd"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen=""
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Dhaka City College Location"
+            ></iframe>
           </div>
         </div>
       </section>
@@ -380,23 +385,23 @@ function NewsletterSection() {
   };
 
   return (
-    <section className="py-16 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
+    <section className="py-16 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 md:p-12 shadow-2xl">
+        <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-3xl p-8 md:p-12 shadow-2xl">
           <FaEnvelope className="text-6xl text-white mx-auto mb-6" />
           <h2 className="text-4xl font-bold text-white mb-4">Stay Updated</h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+          <p className="text-xl text-white mb-8 max-w-2xl mx-auto">
             Subscribe to our newsletter for crisis updates, success stories, and ways to make a difference in your community.
           </p>
 
           {success && (
-            <div className="bg-green-500 text-white rounded-lg p-4 mb-6 max-w-md mx-auto">
+            <div className="bg-white/20 backdrop-blur-sm border-2 border-white/30 text-white rounded-lg p-4 mb-6 max-w-md mx-auto font-semibold">
               {success}
             </div>
           )}
 
           {error && (
-            <div className="bg-red-500 text-white rounded-lg p-4 mb-6 max-w-md mx-auto">
+            <div className="bg-red-600/80 backdrop-blur-sm border-2 border-red-400 text-white rounded-lg p-4 mb-6 max-w-md mx-auto font-semibold">
               {error}
             </div>
           )}
@@ -409,7 +414,7 @@ function NewsletterSection() {
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Enter your email address"
-                className="flex-1 px-6 py-4 rounded-lg text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-white/50 focus:outline-none"
+                className="flex-1 px-6 py-4 rounded-lg text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-white/50 focus:outline-none font-medium"
               />
               <button
                 onClick={handleSubscribe}
@@ -421,7 +426,7 @@ function NewsletterSection() {
             </div>
           </div>
 
-          <p className="text-white/80 text-sm mt-6">
+          <p className="text-white text-sm mt-6 font-medium">
             We respect your privacy. Unsubscribe at any time.
           </p>
         </div>
