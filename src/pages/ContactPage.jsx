@@ -414,8 +414,7 @@ function NewsletterSection() {
                 onChange={(e) => setEmail(e.target.value)}
                 onKeyPress={handleKeyPress}
                 placeholder="Enter your email address"
-                className="flex-1 px-6 py-4 rounded-lg text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-white/50 focus:outline-none font-medium"
-              />
+                className="flex-1 px-6 py-4 rounded-lg text-white placeholder-white/60 focus:ring-4 focus:ring-white/50 focus:outline-none font-medium border border-black/30"></input>
               <button
                 onClick={handleSubscribe}
                 disabled={loading}
