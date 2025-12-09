@@ -24,8 +24,8 @@ export default function ContactPage() {
     {
       icon: FaPhone,
       title: "Call Us",
-      details: "+880 1234-567890",
-      link: "tel:+8801234567890",
+      details: "+8801521738141",
+      link: "tel:+8801521738141",
       color: "text-blue-600",
       bg: "bg-blue-50"
     },
@@ -117,7 +117,7 @@ export default function ContactPage() {
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-6">
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 mb-2">
                     Your Name *
@@ -179,7 +179,7 @@ export default function ContactPage() {
                 </div>
 
                 <button
-                  type="submit"
+                  onClick={handleSubmit}
                   disabled={loading}
                   className="w-full bg-gradient-to-r from-blue-600 to-cyan-600 text-white py-4 rounded-lg hover:from-blue-700 hover:to-cyan-700 transition font-bold text-lg shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
@@ -192,7 +192,7 @@ export default function ContactPage() {
                     </>
                   )}
                 </button>
-              </form>
+              </div>
             </div>
 
             {/* Additional Info */}
@@ -314,6 +314,9 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      {/* Newsletter Section */}
+      <NewsletterSection />
     </div>
   );
 }
@@ -337,5 +340,92 @@ function FAQItem({ question, answer }) {
         </div>
       )}
     </div>
+  );
+}
+
+// Newsletter Section Component
+function NewsletterSection() {
+  const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
+
+  const handleSubscribe = async () => {
+    if (!email || !email.includes('@')) {
+      setError("Please enter a valid email address.");
+      return;
+    }
+
+    setLoading(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      // TODO: Implement actual newsletter subscription
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      setSuccess("Thank you for subscribing! Check your inbox for confirmation.");
+      setEmail("");
+    } catch (err) {
+      setError("Failed to subscribe. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSubscribe();
+    }
+  };
+
+  return (
+    <section className="py-16 bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="bg-white/10 backdrop-blur-lg rounded-3xl p-8 md:p-12 shadow-2xl">
+          <FaEnvelope className="text-6xl text-white mx-auto mb-6" />
+          <h2 className="text-4xl font-bold text-white mb-4">Stay Updated</h2>
+          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+            Subscribe to our newsletter for crisis updates, success stories, and ways to make a difference in your community.
+          </p>
+
+          {success && (
+            <div className="bg-green-500 text-white rounded-lg p-4 mb-6 max-w-md mx-auto">
+              {success}
+            </div>
+          )}
+
+          {error && (
+            <div className="bg-red-500 text-white rounded-lg p-4 mb-6 max-w-md mx-auto">
+              {error}
+            </div>
+          )}
+
+          <div className="max-w-md mx-auto">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                onKeyPress={handleKeyPress}
+                placeholder="Enter your email address"
+                className="flex-1 px-6 py-4 rounded-lg text-gray-900 placeholder-gray-500 focus:ring-4 focus:ring-white/50 focus:outline-none"
+              />
+              <button
+                onClick={handleSubscribe}
+                disabled={loading}
+                className="px-8 py-4 bg-white text-blue-600 font-bold rounded-lg hover:bg-gray-100 transition shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed whitespace-nowrap"
+              >
+                {loading ? "Subscribing..." : "Subscribe"}
+              </button>
+            </div>
+          </div>
+
+          <p className="text-white/80 text-sm mt-6">
+            We respect your privacy. Unsubscribe at any time.
+          </p>
+        </div>
+      </div>
+    </section>
   );
 }
