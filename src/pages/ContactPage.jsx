@@ -51,7 +51,6 @@ export default function ContactPage() {
 
     try {
       // TODO: Implement actual contact form submission
-      // For now, simulate success
       await new Promise(resolve => setTimeout(resolve, 1500));
       
       setSuccess("Thank you for contacting us! We'll get back to you within 24 hours.");
