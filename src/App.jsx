@@ -17,6 +17,7 @@ import Dashboard from './pages/Dashboard';
 import VolunteerPage from './pages/VolunteerPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
+import FAQPage from './pages/FAQPage';
 
 function App() {
   const router = createBrowserRouter(
@@ -49,6 +50,7 @@ function App() {
         {/* Informational pages */}
         <Route path="about" element={<AboutPage />} />
         <Route path="contact" element={<ContactPage />} />
+        <Route path="faq" element={<FAQPage />} />
       </Route>
     )
   )
