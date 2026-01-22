@@ -1,4 +1,5 @@
 import { FaGithub, FaLinkedin, FaFacebook, FaGlobe, FaDiscord, FaHeart } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import logo from "../../assets/Logo_2.png";
 
 export default function Footer() {
@@ -73,9 +74,9 @@ export default function Footer() {
                 </a>
               </li>
               <li>
-                <a href="/faq" className="text-gray-300 hover:text-red-400 transition-colors flex items-center gap-2">
+                <Link to="/faq" className="text-gray-300 hover:text-red-400 transition-colors flex items-center gap-2">
                   <span className="text-red-500">▸</span> FAQ
-                </a>
+                </Link>
               </li>
               <li>
                 <a href="/contact" className="text-gray-300 hover:text-red-400 transition-colors flex items-center gap-2">
